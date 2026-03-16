@@ -25,13 +25,19 @@ It wrote the code, ran away, and now the game is unplayable.
 
 ## 📝 Document Your Experience
 
-- [ ] Describe the game's purpose.
-- [ ] Detail which bugs you found.
-- [ ] Explain what fixes you applied.
+- [x] **Describe the game's purpose.**  
+  This is a number guessing game built with Streamlit where players try to guess a secret number within a range determined by difficulty level (Easy: 1-20, Normal: 1-100, Hard: 1-500). The game provides hints ("Higher" or "Lower"), tracks attempts, awards points based on performance, and includes features like difficulty selection, game history, and a developer debug panel.
+
+- [x] **Detail which bugs you found.**  
+  Lack of Streamlit session state caused the secret number, attempts, score, status, and history to reset on every interaction. Hints were incorrect on even-numbered attempts because the secret was cast to string, causing wrong comparisons (e.g., "9" > "10"). Attempt counter started at 1 instead of 0, wasting the first guess. Easy difficulty had fewer attempts (6) than Normal (8), making it harder instead of easier. Hard difficulty had a smaller range (1-50) than Normal (1-100). Info text was hardcoded to "1 and 100" regardless of difficulty. "New Game" button used a hardcoded range (1-100) and didn't reset game status or history. Changing difficulty didn't reset the game state. The check_guess function was defined locally in app.py instead of being refactored to logic_utils.py.
+
+- [x] **Explain what fixes you applied.**  
+  Implemented Streamlit session state (`st.session_state`) to persist secret number, attempts, score, status, and history across reruns. Replaced local check_guess definition with an import from logic_utils.py. Fixed string comparison by casting both guess and secret to integers, eliminating wrong hints on even attempts. Corrected attempt initialization to 0, fixed difficulty ranges (Hard now 1-500), and adjusted attempt limits (Easy: 10 attempts, Normal: 8, Hard: 5). Made info text dynamic based on selected difficulty. Updated "New Game" to properly reset all state variables using the correct range. Added logic to reset game when difficulty changes. Refactored shared functions to `logic_utils.py` and added comprehensive pytest tests to verify logic correctness.
 
 ## 📸 Demo
 
-- [ ] [Insert a screenshot of your fixed, winning game here]
+- [ ] ![Game Screenshot](images/game_screenshot.png)
+- [ ] ![Pytest Results](images/pytest_results.png)
 
 ## 🚀 Stretch Features
 
