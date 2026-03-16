@@ -9,7 +9,23 @@ def parse_guess(raw: str):
 
     Returns: (ok: bool, guess_int: int | None, error_message: str | None)
     """
-    raise NotImplementedError("Refactor this function from app.py into logic_utils.py")
+    if raw is None:
+        return False, None, "Enter a guess."
+
+    raw = raw.strip()  # Strip whitespace to handle " 50 " gracefully
+    if raw == "":
+        return False, None, "Enter a guess."
+
+    try:
+        if "." in raw:
+            return False, None, "Please enter a whole number (no decimals)."
+        value = int(raw)
+        if value <= 0:
+            return False, None, "Please enter a positive number."
+    except Exception:
+        return False, None, "That is not a number."
+
+    return True, value, None
 
 
 # FIX: Moved check_guess from app.py into logic_utils.py with Claude AI (Chat mode).

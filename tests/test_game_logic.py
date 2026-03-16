@@ -1,4 +1,4 @@
-from logic_utils import check_guess
+from logic_utils import check_guess, parse_guess
 
 def test_winning_guess():
     # If the secret is 50 and guess is 50, it should be a win
@@ -21,3 +21,27 @@ def test_string_secret_does_not_break_comparison():
     # would wrongly return "Too High". It must return "Too Low".
     outcome, _ = check_guess(9, "10")
     assert outcome == "Too Low"
+
+
+def test_parse_negative_number():
+    # Edge case: Negative numbers should be rejected
+    ok, value, error = parse_guess("-10")
+    assert ok == False
+    assert value is None
+    assert error == "Please enter a positive number."
+
+
+def test_parse_decimal_number():
+    # Edge case: Decimal numbers should be rejected
+    ok, value, error = parse_guess("5.7")
+    assert ok == False
+    assert value is None
+    assert error == "Please enter a whole number (no decimals)."
+
+
+def test_parse_whitespace_input():
+    # Edge case: Inputs with leading/trailing spaces are accepted after stripping
+    ok, value, error = parse_guess(" 50 ")
+    assert ok == True
+    assert value == 50
+    assert error is None
